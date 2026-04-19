@@ -1,0 +1,91 @@
+[2026-04-09 21:36:02] mfediaz@tip.edu.ph | EquiLink Reminder: Return due today (REQ-7024) | FAILED
+[2026-04-09 21:40:03] mfediaz@tip.edu.ph | EquiLink Reminder: Return due today (REQ-7024) | FAILED
+[2026-04-10 01:34:21] mfediaz@tip.edu.ph | EquiLink Reminder: Return due today (REQ-9289) | SENT
+[2026-04-10 01:34:28] beefyspud@gmail.com | EquiLink Org Notice: Return due today (REQ-9289) | SENT
+[2026-04-11 10:49:38] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-8956) | SENT
+[2026-04-11 11:15:10] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-5688) | SENT
+[2026-04-11 11:15:15] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-5024) | SENT
+[2026-04-11 11:20:36] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-4461) | SENT
+[2026-04-11 12:21:45] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-3854) | SENT
+[2026-04-11 12:21:50] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-3103) | SENT
+[2026-04-11 12:21:55] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-1759) | SENT
+[2026-04-11 21:57:53] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-3805) | SENT
+[2026-04-11 21:57:58] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-2026-0001) | SENT
+[2026-04-11 21:58:03] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-2026-0002) | SENT
+[2026-04-11 21:58:08] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-2026-0003) | SENT
+[2026-04-11 21:58:12] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-2026-0004) | SENT
+[2026-04-11 22:04:13] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-2026-0005) | SENT
+[2026-04-11 22:10:14] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-2026-0006) | SENT
+[2026-04-11 22:13:51] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-2026-0007) | SENT
+[2026-04-12 00:49:05] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-8956) | SENT
+[2026-04-12 00:49:12] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-8956) | SENT
+[2026-04-12 00:49:16] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-5688) | SENT
+[2026-04-12 00:49:22] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-5688) | SENT
+[2026-04-12 00:49:31] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-5024) | SENT
+[2026-04-12 00:49:37] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-5024) | SENT
+[2026-04-12 00:49:42] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-4461) | SENT
+[2026-04-12 00:49:49] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-4461) | SENT
+[2026-04-12 00:49:54] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-3854) | SENT
+[2026-04-12 00:49:59] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-3854) | SENT
+[2026-04-12 00:50:05] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-4780) | SENT
+[2026-04-12 00:50:13] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-3103) | SENT
+[2026-04-12 00:50:20] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-3103) | SENT
+[2026-04-12 00:50:25] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-1759) | SENT
+[2026-04-12 00:50:32] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-1759) | SENT
+[2026-04-12 00:50:36] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-3805) | SENT
+[2026-04-12 00:50:40] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-3805) | SENT
+[2026-04-12 00:50:44] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0001) | SENT
+[2026-04-12 00:50:50] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0001) | SENT
+[2026-04-12 00:50:50] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-8956) | SENT
+[2026-04-12 00:50:56] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0002) | SENT
+[2026-04-12 00:50:56] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-8956) | SENT
+[2026-04-12 00:51:01] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0002) | SENT
+[2026-04-12 00:51:02] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-5688) | SENT
+[2026-04-12 00:51:06] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0003) | SENT
+[2026-04-12 00:51:06] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-5688) | SENT
+[2026-04-12 00:51:10] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0003) | SENT
+[2026-04-12 00:51:11] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-5024) | SENT
+[2026-04-12 00:51:15] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0004) | SENT
+[2026-04-12 00:51:17] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-5024) | SENT
+[2026-04-12 00:51:20] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0004) | SENT
+[2026-04-12 00:51:22] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-4461) | SENT
+[2026-04-12 00:51:26] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0005) | SENT
+[2026-04-12 00:51:28] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-4461) | SENT
+[2026-04-12 00:51:30] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0005) | SENT
+[2026-04-12 00:51:38] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-3854) | SENT
+[2026-04-12 00:51:41] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0006) | SENT
+[2026-04-12 00:51:50] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-3854) | SENT
+[2026-04-12 00:52:02] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-4780) | SENT
+[2026-04-12 00:52:04] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0006) | SENT
+[2026-04-12 00:52:07] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-3103) | SENT
+[2026-04-12 00:52:09] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0007) | SENT
+[2026-04-12 00:52:14] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-3103) | SENT
+[2026-04-12 00:52:15] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0007) | SENT
+[2026-04-12 00:52:20] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-1759) | SENT
+[2026-04-12 00:52:22] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0008) | SENT
+[2026-04-12 00:52:26] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-1759) | SENT
+[2026-04-12 00:52:28] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0008) | SENT
+[2026-04-12 00:52:32] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-3805) | SENT
+[2026-04-12 00:52:35] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0009) | SENT
+[2026-04-12 00:52:39] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-3805) | SENT
+[2026-04-12 00:52:42] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0009) | SENT
+[2026-04-12 00:52:46] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0001) | SENT
+[2026-04-12 00:52:51] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0001) | SENT
+[2026-04-12 00:52:57] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0002) | SENT
+[2026-04-12 00:53:03] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0002) | SENT
+[2026-04-12 00:53:09] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0003) | SENT
+[2026-04-12 00:53:15] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0003) | SENT
+[2026-04-12 00:53:30] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0004) | SENT
+[2026-04-12 00:53:35] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0004) | SENT
+[2026-04-12 00:53:40] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0005) | SENT
+[2026-04-12 00:53:46] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0005) | SENT
+[2026-04-12 00:53:51] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0006) | SENT
+[2026-04-12 00:53:58] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0006) | SENT
+[2026-04-12 00:54:04] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0007) | SENT
+[2026-04-12 00:54:10] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0007) | SENT
+[2026-04-12 00:54:18] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0008) | SENT
+[2026-04-12 00:54:26] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0008) | SENT
+[2026-04-12 00:54:32] maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due today (REQ-2026-0009) | SENT
+[2026-04-12 00:54:40] maparbolente@tip.edu.ph | TOOLTRACE Org Notice: Return due today (REQ-2026-0009) | SENT
+[2026-04-13 01:39:12] REQ-2026-0101|2026-04-13 | maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-2026-0101) | SENT
+[2026-04-13 01:39:16] REQ-2026-0102|2026-04-13 | maparbolente@tip.edu.ph | TOOLTRACE Reminder: Return due tomorrow (REQ-2026-0102) | SENT

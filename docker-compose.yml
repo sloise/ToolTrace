@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      # Database variables
+      - DB_HOST=mysql
+      - DB_USER=tooltrace_user
+      - DB_PASSWORD=tooltrace_password
+      - DB_NAME=tooltrace_db
+      # Email/SMTP variables
+      - MAIL_HOST=smtp.gmail.com
+      - MAIL_PORT=587
+      - MAIL_USERNAME=tooltraceofficial@gmail.com
+      - MAIL_PASSWORD=efcasdhnhetxtneb
+      - MAIL_FROM=tooltraceofficial@gmail.com
+    depends_on:
+      - mysql
+    volumes:
+      - .:/var/www/html
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=tooltrace_db
+      - MYSQL_USER=tooltrace_user
+      - MYSQL_PASSWORD=tooltrace_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./ToolTrace/tooltrace.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  mysql_data:

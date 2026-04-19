@@ -1,0 +1,77 @@
+{
+  "chair": [
+    "chair",
+    "monoblock",
+    "monoblock chair",
+    "plastic chair",
+    "seat"
+  ],
+  "table": [
+    "table",
+    "foldable table",
+    "folding table",
+    "foldable",
+    "folding"
+  ],
+  "camera": [
+    "camera",
+    "digital camera",
+    "dslr",
+    "mirrorless",
+    "canon",
+    "eos",
+    "r5",
+    "lens",
+    "photography"
+  ],
+  "projector": [
+    "projector",
+    "multimedia projector",
+    "epson",
+    "beamer",
+    "presentation",
+    "lcd projector"
+  ],
+  "hdmi_cable": [
+    "hdmi",
+    "hdmi cable",
+    "cable",
+    "wire",
+    "connector",
+    "plug"
+  ],
+  "power_cable": [
+    "power cord",
+    "power cable",
+    "cable",
+    "cord",
+    "charger",
+    "adapter"
+  ],
+  "microphone": [
+    "microphone",
+    "mic",
+    "wireless microphone",
+    "lavalier"
+  ],
+  "remote": [
+    "remote control",
+    "remote",
+    "controller",
+    "infrared"
+  ],
+  "case": [
+    "bag",
+    "case",
+    "carrying case",
+    "luggage",
+    "container"
+  ],
+  "adapter": [
+    "adapter",
+    "vga",
+    "vga adapter",
+    "hdmi adapter",
+    "converter"
+  ]
+}

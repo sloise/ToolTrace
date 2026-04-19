@@ -1,0 +1,17 @@
+{
+    "name": "user/tooltrace",
+    "autoload": {
+        "psr-4": {
+            "User\\ToolTrace\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Cheska",
+            "email": "chesskaeunice@gmail.com"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^7.0"
+    }
+}
