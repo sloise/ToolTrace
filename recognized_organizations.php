@@ -100,8 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $rows = [];
 try {
-    $rows = $pdo->query("SELECT org_id, org_name, acronym, org_email FROM recognized_organizations ORDER BY org_name ASC")->fetchAll();
-} catch (Throwable $e) {
+$rows = $pdo->query("SELECT recognized_org_id as org_id, org_name, acronym, org_email FROM recognized_organizations ORDER BY org_name ASC")->fetchAll(PDO::FETCH_ASSOC);} catch (Throwable $e) {
     $rows = [];
 }
 
