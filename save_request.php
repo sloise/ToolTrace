@@ -33,18 +33,9 @@ try {
 
     $pdo = db();
 
-    try {
-        $pdo->exec("ALTER TABLE borrow_transactions ADD COLUMN oic_id_data LONGTEXT NULL");
-    } catch (Throwable $e) {
-    }
-    try {
-        $pdo->exec("ALTER TABLE borrow_transactions ADD COLUMN oic_id_mime VARCHAR(100) NULL");
-    } catch (Throwable $e) {
-    }
-    try {
-        $pdo->exec("ALTER TABLE borrow_transactions ADD COLUMN oic_id_original_name VARCHAR(255) NULL");
-    } catch (Throwable $e) {
-    }
+    try { $pdo->exec("ALTER TABLE borrow_transactions ADD COLUMN oic_id_data LONGTEXT NULL"); } catch (Throwable $e) {}
+    try { $pdo->exec("ALTER TABLE borrow_transactions ADD COLUMN oic_id_mime VARCHAR(100) NULL"); } catch (Throwable $e) {}
+    try { $pdo->exec("ALTER TABLE borrow_transactions ADD COLUMN oic_id_original_name VARCHAR(255) NULL"); } catch (Throwable $e) {}
 
     $orgEmail   = strtolower(trim((string) $data['organization_email']));
     $purpose    = trim((string) ($data['purpose']    ?? ''));
@@ -54,88 +45,54 @@ try {
     $officer    = trim((string) ($data['officer_in_charge'] ?? $data['officer'] ?? ''));
     $items      = isset($data['items']) && is_array($data['items']) ? $data['items'] : [];
 
-$oicIdData     = null;
-$oicIdMime     = null;
-$oicIdOriginal = null;
+    // ── OIC ID file — stored as base64 data URL in MySQL (Railway-compatible) ──
+    $oicIdData     = null;
+    $oicIdMime     = null;
+    $oicIdOriginal = null;
 
-if (
-    isset($_FILES['oic_id_file']) &&
-    is_array($_FILES['oic_id_file']) &&
-    ((int)($_FILES['oic_id_file']['error'] ?? UPLOAD_ERR_NO_FILE)) === UPLOAD_ERR_OK
-) {
-    $tmp  = (string)($_FILES['oic_id_file']['tmp_name'] ?? '');
-    $size = (int)($_FILES['oic_id_file']['size'] ?? 0);
+    if (
+        isset($_FILES['oic_id_file']) &&
+        is_array($_FILES['oic_id_file']) &&
+        ((int)($_FILES['oic_id_file']['error'] ?? UPLOAD_ERR_NO_FILE)) === UPLOAD_ERR_OK
+    ) {
+        $tmp  = (string)($_FILES['oic_id_file']['tmp_name'] ?? '');
+        $size = (int)($_FILES['oic_id_file']['size'] ?? 0);
 
-    if ($tmp === '' || !is_uploaded_file($tmp) || $size <= 0) {
-        http_response_code(422);
-        echo json_encode(['success' => false, 'error' => 'Invalid upload.']);
-        exit;
-    }
+        if ($tmp === '' || !is_uploaded_file($tmp) || $size <= 0) {
+            http_response_code(422);
+            echo json_encode(['success' => false, 'error' => 'Invalid upload.']);
+            exit;
+        }
 
-    $finfo   = new finfo(FILEINFO_MIME_TYPE);
-    $mime    = (string)($finfo->file($tmp) ?: '');
-    $allowed = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'application/pdf' => 'pdf'];
-
-    if (!isset($allowed[$mime])) {
-        http_response_code(422);
-        echo json_encode(['success' => false, 'error' => 'Invalid file type. JPG, PNG, or PDF only.']);
-        exit;
-    }
-
-    $rawBytes = @file_get_contents($tmp);
-    if ($rawBytes === false || strlen($rawBytes) === 0) {
-        http_response_code(500);
-        echo json_encode(['success' => false, 'error' => 'Could not read uploaded file.']);
-        exit;
-    }
-
-    // Same pattern as inventory_api.php — base64 data URL stored in MySQL
-    $oicIdData     = 'data:' . $mime . ';base64,' . base64_encode($rawBytes);
-    $oicIdMime     = $mime;
-    $oicIdOriginal = (string)($_FILES['oic_id_file']['name'] ?? '');
-}
-
-if ($oicIdData === null) {
-    http_response_code(422);
-    echo json_encode(['success' => false, 'error' => 'Officer-in-Charge ID upload is required.']);
-    exit;
-}
-
-        $oicIdOriginal = (string) ($_FILES['oic_id_file']['name'] ?? '');
-        $finfo = new finfo(FILEINFO_MIME_TYPE);
-        $mime = (string) ($finfo->file($tmp) ?: '');
+        $finfo   = new finfo(FILEINFO_MIME_TYPE);
+        $mime    = (string)($finfo->file($tmp) ?: '');
         $allowed = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'application/pdf' => 'pdf'];
+
         if (!isset($allowed[$mime])) {
             http_response_code(422);
-            echo json_encode(['success' => false, 'error' => 'Invalid ID file type. Please upload JPG, PNG, or PDF.']);
+            echo json_encode(['success' => false, 'error' => 'Invalid file type. JPG, PNG, or PDF only.']);
             exit;
         }
 
-        $dir = TOOLTRACE_DATA_DIR . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'oic_ids';
-        if (!is_dir($dir)) {
-            @mkdir($dir, 0755, true);
-        }
-
-        $ext = $allowed[$mime];
-        $name = bin2hex(random_bytes(16)) . '.' . $ext;
-        $dest = $dir . DIRECTORY_SEPARATOR . $name;
-        if (!@move_uploaded_file($tmp, $dest)) {
+        $rawBytes = @file_get_contents($tmp);
+        if ($rawBytes === false || strlen($rawBytes) === 0) {
             http_response_code(500);
-            echo json_encode(['success' => false, 'error' => 'Could not store uploaded ID.']);
+            echo json_encode(['success' => false, 'error' => 'Could not read uploaded file.']);
             exit;
         }
 
-        $oicIdMime = $mime;
-        $oicIdPath = 'data/uploads/oic_ids/' . $name;
+        $oicIdData     = 'data:' . $mime . ';base64,' . base64_encode($rawBytes);
+        $oicIdMime     = $mime;
+        $oicIdOriginal = (string)($_FILES['oic_id_file']['name'] ?? '');
     }
 
-    if ($oicIdPath === null) {
+    if ($oicIdData === null) {
         http_response_code(422);
         echo json_encode(['success' => false, 'error' => 'Officer-in-Charge ID upload is required.']);
         exit;
     }
 
-    // ── Resolve org_id from email ─────────────────────────────────────────────────
+    // ── Resolve org_id from email ─────────────────────────────────────────────
     $orgStmt = $pdo->prepare("SELECT org_id FROM organizations WHERE LOWER(org_email) = ?");
     $orgStmt->execute([$orgEmail]);
     $org = $orgStmt->fetch();
@@ -147,7 +104,7 @@ if ($oicIdData === null) {
     }
     $orgId = $org['org_id'];
 
-    // ── Pick a staff_id (use the logged-in staff, or fall back to staff_id = 1) ───
+    // ── Pick a staff_id ───────────────────────────────────────────────────────
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -157,7 +114,7 @@ if ($oicIdData === null) {
     $staffRow   = $staffStmt->fetch();
     $staffId    = $staffRow ? (int) $staffRow['staff_id'] : 1;
 
-    // ── Generate next request group ID ───────────────────────────────────────────
+    // ── Generate next request group ID ────────────────────────────────────────
     $year   = date('Y');
     $prefix = 'REQ-' . $year . '-';
 
@@ -176,10 +133,9 @@ if ($oicIdData === null) {
         $maxSeq = (int) $m[1];
     }
 
-    // Safety: ensure we don't collide with existing IDs
     $groupSeq = $maxSeq + 1;
     while (true) {
-        $candidate = $prefix . str_pad((string) $groupSeq, 4, '0', STR_PAD_LEFT);
+        $candidate  = $prefix . str_pad((string) $groupSeq, 4, '0', STR_PAD_LEFT);
         $existsStmt = $pdo->prepare("SELECT 1 FROM borrow_transactions WHERE request_group_id = ? OR transaction_id = ? LIMIT 1");
         $existsStmt->execute([$candidate, $candidate . '-01']);
         if (!$existsStmt->fetchColumn()) {
@@ -189,32 +145,31 @@ if ($oicIdData === null) {
         $groupSeq++;
     }
 
-    $itemSeq = 0;
-
+    // ── Insert rows ───────────────────────────────────────────────────────────
     $insertStmt = $pdo->prepare("
         INSERT INTO borrow_transactions
-            (transaction_id, ..., oic_id_data, oic_id_mime, oic_id_original_name)
-VALUES (?, ..., ?, ?, ?)
+            (transaction_id, request_group_id, org_id, equipment_id, unit_id,
+             staff_id, purpose, location, officer_in_charge, date_borrowed,
+             due_date, status, approval_status,
+             oic_id_data, oic_id_mime, oic_id_original_name)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', 'Pending', ?, ?, ?)
     ");
 
     $firstRequestId = null;
     $errors         = [];
+    $seenUnits      = [];
+    $itemSeq        = 0;
 
-    $seenUnits = [];
     foreach ($items as $item) {
         $equipmentId = trim((string) ($item['id'] ?? ''));
-        if ($equipmentId === '') {
-            continue;
-        }
-        $qty = (int) ($item['qty'] ?? 1);
-        if ($qty < 1) $qty = 1;
+        if ($equipmentId === '') continue;
+
+        $qty = max(1, (int) ($item['qty'] ?? 1));
 
         $unitIds = [];
         if (isset($item['unit_ids']) && is_array($item['unit_ids'])) {
             foreach ($item['unit_ids'] as $uid) {
-                if (is_numeric($uid)) {
-                    $unitIds[] = (int) $uid;
-                }
+                if (is_numeric($uid)) $unitIds[] = (int) $uid;
             }
         }
         $unitIds = array_values(array_unique($unitIds));
@@ -239,8 +194,9 @@ VALUES (?, ..., ?, ?, ?)
         ");
         $availStmt->execute([$equipmentId, $equipmentId]);
         $availableCount = (int) $availStmt->fetchColumn();
+
         if ($qty > $availableCount) {
-            $errors[] = "Only {$availableCount} unit(s) available. You cannot borrow more than the available stock.";
+            $errors[] = "Only {$availableCount} unit(s) available for equipment: $equipmentId";
             continue;
         }
 
@@ -259,8 +215,7 @@ VALUES (?, ..., ?, ?, ?)
             }
 
             $busyStmt = $pdo->prepare("
-                SELECT 1
-                FROM borrow_transactions
+                SELECT 1 FROM borrow_transactions
                 WHERE unit_id = ?
                   AND status <> 'Returned'
                   AND approval_status <> 'Rejected'
@@ -290,7 +245,7 @@ VALUES (?, ..., ?, ?, ?)
                 $staffId,
                 $purpose,
                 ($location !== '' ? $location : null),
-                ($officer !== '' ? $officer : null),
+                ($officer  !== '' ? $officer  : null),
                 $dateBorrow,
                 $dueDate,
                 $oicIdData,
