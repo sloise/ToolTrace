@@ -34,7 +34,7 @@ try {
     $pdo = db();
 
     try {
-        $pdo->exec("ALTER TABLE borrow_transactions ADD COLUMN oic_id_path VARCHAR(255) NULL");
+        $pdo->exec("ALTER TABLE borrow_transactions ADD COLUMN oic_id_data LONGTEXT NULL");
     } catch (Throwable $e) {
     }
     try {
@@ -193,8 +193,8 @@ if ($oicIdData === null) {
 
     $insertStmt = $pdo->prepare("
         INSERT INTO borrow_transactions
-            (transaction_id, request_group_id, org_id, equipment_id, unit_id, staff_id, purpose, location, officer_in_charge, date_borrowed, due_date, status, approval_status, oic_id_path, oic_id_mime, oic_id_original_name)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', 'Pending', ?, ?, ?)
+            (transaction_id, ..., oic_id_data, oic_id_mime, oic_id_original_name)
+VALUES (?, ..., ?, ?, ?)
     ");
 
     $firstRequestId = null;
@@ -293,7 +293,7 @@ if ($oicIdData === null) {
                 ($officer !== '' ? $officer : null),
                 $dateBorrow,
                 $dueDate,
-                $oicIdPath,
+                $oicIdData,
                 $oicIdMime,
                 ($oicIdOriginal !== '' ? $oicIdOriginal : null),
             ]);
