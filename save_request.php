@@ -54,19 +54,52 @@ try {
     $officer    = trim((string) ($data['officer_in_charge'] ?? $data['officer'] ?? ''));
     $items      = isset($data['items']) && is_array($data['items']) ? $data['items'] : [];
 
-    $oicIdPath = null;
-    $oicIdMime = null;
-    $oicIdOriginal = null;
+$oicIdData     = null;
+$oicIdMime     = null;
+$oicIdOriginal = null;
 
-    if (isset($_FILES['oic_id_file']) && is_array($_FILES['oic_id_file']) && isset($_FILES['oic_id_file']['tmp_name'])) {
-        $tmp  = (string) ($_FILES['oic_id_file']['tmp_name'] ?? '');
-        $err  = (int) ($_FILES['oic_id_file']['error'] ?? UPLOAD_ERR_NO_FILE);
-        $size = (int) ($_FILES['oic_id_file']['size'] ?? 0);
-        if ($err !== UPLOAD_ERR_OK || $tmp === '' || !is_uploaded_file($tmp) || $size <= 0) {
-            http_response_code(422);
-            echo json_encode(['success' => false, 'error' => 'Invalid Officer-in-Charge ID upload.']);
-            exit;
-        }
+if (
+    isset($_FILES['oic_id_file']) &&
+    is_array($_FILES['oic_id_file']) &&
+    ((int)($_FILES['oic_id_file']['error'] ?? UPLOAD_ERR_NO_FILE)) === UPLOAD_ERR_OK
+) {
+    $tmp  = (string)($_FILES['oic_id_file']['tmp_name'] ?? '');
+    $size = (int)($_FILES['oic_id_file']['size'] ?? 0);
+
+    if ($tmp === '' || !is_uploaded_file($tmp) || $size <= 0) {
+        http_response_code(422);
+        echo json_encode(['success' => false, 'error' => 'Invalid upload.']);
+        exit;
+    }
+
+    $finfo   = new finfo(FILEINFO_MIME_TYPE);
+    $mime    = (string)($finfo->file($tmp) ?: '');
+    $allowed = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'application/pdf' => 'pdf'];
+
+    if (!isset($allowed[$mime])) {
+        http_response_code(422);
+        echo json_encode(['success' => false, 'error' => 'Invalid file type. JPG, PNG, or PDF only.']);
+        exit;
+    }
+
+    $rawBytes = @file_get_contents($tmp);
+    if ($rawBytes === false || strlen($rawBytes) === 0) {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'error' => 'Could not read uploaded file.']);
+        exit;
+    }
+
+    // Same pattern as inventory_api.php — base64 data URL stored in MySQL
+    $oicIdData     = 'data:' . $mime . ';base64,' . base64_encode($rawBytes);
+    $oicIdMime     = $mime;
+    $oicIdOriginal = (string)($_FILES['oic_id_file']['name'] ?? '');
+}
+
+if ($oicIdData === null) {
+    http_response_code(422);
+    echo json_encode(['success' => false, 'error' => 'Officer-in-Charge ID upload is required.']);
+    exit;
+}
 
         $oicIdOriginal = (string) ($_FILES['oic_id_file']['name'] ?? '');
         $finfo = new finfo(FILEINFO_MIME_TYPE);
