@@ -823,7 +823,6 @@ foreach($filtered_list as $item):
                         data-name="<?php echo htmlspecialchars($item['name'], ENT_QUOTES); ?>"
                         data-image="<?php echo htmlspecialchars($item['image'], ENT_QUOTES); ?>"
                         data-category="<?php echo htmlspecialchars($item['category'], ENT_QUOTES); ?>"
-                        onclick="handleAddToCartClick(this)"
                         <?php echo (!$isAvailable) ? 'disabled' : ''; ?>>
                         <?php echo ($isAvailable) ? 'Add to Borrow List' : 'Not Available'; ?>
                     </button>
@@ -914,6 +913,11 @@ endforeach;
         // === EQUIPMENT DATA ===
         const ALL_EQUIPMENT = <?php echo $equipment_json; ?>;
 
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-add-cart');
+            if (!btn || btn.disabled) return;
+            addToCart(btn.dataset.id, btn.dataset.name, btn.dataset.image, btn.dataset.category);
+        });
         function showBorrowAlert(message) {
             const overlay = document.getElementById('borrowAlertModal');
             const msgEl = document.getElementById('borrowAlertMessage');
@@ -1311,13 +1315,6 @@ endforeach;
             }
         }
 
-        function handleAddToCartClick(button) {
-            const id = button.dataset.id;
-            const name = button.dataset.name;
-            const image = button.dataset.image;
-            const category = button.dataset.category;
-            addToCart(id, name, image, category);
-        }
 
         // === BAG MODAL ===
         const bagModal = document.getElementById('bagModal');
