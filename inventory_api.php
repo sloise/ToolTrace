@@ -1,6 +1,7 @@
 <?php
 /**
  * ToolTrace - Staff Inventory CRUD API (PDO-backed)
+ * FIXED: Images stored as base64 data URLs in MySQL (Railway-compatible)
  */
 declare(strict_types=1);
 
@@ -113,23 +114,24 @@ if ($action === 'save') {
         $mode = '';
     }
 
+    // ===== FIXED: Store images as base64 in MySQL =====
     $savedImage = null;
     if (isset($_FILES['image']) && is_array($_FILES['image']) && ($_FILES['image']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK) {
         $tmpName = (string) ($_FILES['image']['tmp_name'] ?? '');
         $origName = (string) ($_FILES['image']['name'] ?? '');
+        $mimeType = (string) ($_FILES['image']['type'] ?? 'image/jpeg');
         $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
         $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        
         if ($tmpName !== '' && in_array($ext, $allowed, true)) {
-            $uploadDir = __DIR__ . '/assets/images/uploads';
-            if (!is_dir($uploadDir)) {
-                @mkdir($uploadDir, 0775, true);
-            }
-            $equipmentId = preg_replace('/[^A-Za-z0-9_-]/', '_', (string) $item['equipment_id']);
-            $fileName = $equipmentId . '_' . date('Ymd_His') . '_' . bin2hex(random_bytes(4)) . '.' . $ext;
-            $destPath = $uploadDir . '/' . $fileName;
-            if (@move_uploaded_file($tmpName, $destPath)) {
-                $savedImage = 'assets/images/uploads/' . $fileName;
-                $item['image'] = $savedImage;
+            // Read the file and convert to base64
+            $imageData = @file_get_contents($tmpName);
+            if ($imageData !== false) {
+                // Create data URL with base64 encoding
+                // This is stored directly in MySQL and works everywhere
+                $base64Image = 'data:' . $mimeType . ';base64,' . base64_encode($imageData);
+                $savedImage = $base64Image;
+                $item['image'] = $base64Image;
                 $body['item'] = $item;
             }
         }
@@ -172,9 +174,11 @@ if ($action === 'save') {
             'quantity'    => isset($item['quantity']) ? (int) $item['quantity'] : null,
         ];
 
-        // Never store base64/data URLs in DB (column is varchar(255) and will truncate)
-        if (!$hasDataUrlImage) {
-            $fields['image'] = $item['image'] ?? null;
+        // Store base64 data URLs directly in the image column
+        if ($hasDataUrlImage) {
+            $fields['image'] = $rawImage;
+        } elseif ($savedImage !== null) {
+            $fields['image'] = $savedImage;
         }
 
         $ok = tooltrace_inventory_update($equipmentId, $fields);
@@ -202,9 +206,13 @@ if ($action === 'save') {
         }
     } else {
         // Insert new
+        // Store base64 data URLs directly in the image column
         if ($hasDataUrlImage) {
-            $item['image'] = null;
+            $item['image'] = $rawImage;
+        } elseif ($savedImage !== null) {
+            $item['image'] = $savedImage;
         }
+        
         $ok = tooltrace_inventory_add($item);
         if (!$ok) {
             http_response_code(500);
