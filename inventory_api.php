@@ -199,21 +199,26 @@ if ($action === 'save') {
         // NOTE: Only update unit conditions, don't delete/recreate units if they have borrow history
         try {
             // Get existing units
-            $existingUnits = $pdo->prepare("SELECT unit_id, unit_number FROM equipment_units WHERE equipment_id = ?");
+            $existingUnits = $pdo->prepare("SELECT unit_number, unit_id FROM equipment_units WHERE equipment_id = ? ORDER BY unit_number");
             $existingUnits->execute([$equipmentId]);
-            $existing = $existingUnits->fetchAll(PDO::FETCH_KEY_PAIR);
+            $existingUnitsByNumber = [];
+            foreach ($existingUnits->fetchAll(PDO::FETCH_ASSOC) as $eu) {
+                $existingUnitsByNumber[(int)$eu['unit_number']] = $eu['unit_id'];
+            }
             
-            // Update existing units with new conditions
+            // Update existing units with new conditions, insert only new ones
             foreach ($unitsToPersist as $unit) {
                 $unitNum = (int) $unit['unit_number'];
-                if (isset($existing[$unitNum])) {
+                $condTag = $unit['condition_tag'] ?? 'GOOD';
+                
+                if (isset($existingUnitsByNumber[$unitNum])) {
                     // Unit exists, update its condition
-                    $upd = $pdo->prepare("UPDATE equipment_units SET condition_tag = ? WHERE unit_id = ?");
-                    $upd->execute([$unit['condition_tag'] ?? 'GOOD', $existing[$unitNum]]);
+                    $upd = $pdo->prepare("UPDATE equipment_units SET condition_tag = ? WHERE unit_number = ? AND equipment_id = ?");
+                    $upd->execute([$condTag, $unitNum, $equipmentId]);
                 } else {
                     // New unit, insert it
                     $u = $pdo->prepare("INSERT INTO equipment_units (equipment_id, unit_number, condition_tag) VALUES (?, ?, ?)");
-                    $u->execute([$equipmentId, $unitNum, $unit['condition_tag'] ?? 'GOOD']);
+                    $u->execute([$equipmentId, $unitNum, $condTag]);
                 }
             }
         } catch (Exception $e) {
