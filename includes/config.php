@@ -35,6 +35,9 @@ function db(): PDO {
             PDO::ATTR_EMULATE_PREPARES   => false,
         ]);
 
+        $pdo->exec("SET NAMES utf8mb4 COLLATE utf8mb4_general_ci");
+        $pdo->exec("SET collation_connection = utf8mb4_general_ci");
+        
     } catch (PDOException $e) {
         // Return JSON instead of dying so save_request.php can catch it
         header('Content-Type: application/json');
