@@ -19,6 +19,12 @@ if (($_SESSION['role'] ?? '') !== 'Maintenance Staff') {
 
 require_once __DIR__ . '/includes/inventory_store.php';
 
+// Enable error logging to catch issues
+set_error_handler(function($errno, $errstr, $errfile, $errline) {
+    error_log("PHP Error [{$errno}]: {$errstr} in {$errfile}:{$errline}");
+    return false;
+});
+
 function tooltrace_inventory_build_units_from_item(array $item): array
 {
     if (!empty($item['units']) && is_array($item['units'])) {
@@ -181,22 +187,53 @@ if ($action === 'save') {
             $fields['image'] = $savedImage;
         }
 
-        $ok = tooltrace_inventory_update($equipmentId, $fields);
+        try {
+            $ok = tooltrace_inventory_update($equipmentId, $fields);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+            exit;
+        }
 
         // Sync units derived from quantity/conditions
-        $pdo->prepare("DELETE FROM equipment_units WHERE equipment_id = ?")->execute([$equipmentId]);
-        foreach ($unitsToPersist as $unit) {
-            $u = $pdo->prepare("INSERT INTO equipment_units (equipment_id, unit_number, condition_tag) VALUES (?, ?, ?)");
-            $u->execute([$equipmentId, (int) $unit['unit_number'], $unit['condition_tag'] ?? 'GOOD']);
+        // NOTE: Only update unit conditions, don't delete/recreate units if they have borrow history
+        try {
+            // Get existing units
+            $existingUnits = $pdo->prepare("SELECT unit_id, unit_number FROM equipment_units WHERE equipment_id = ?");
+            $existingUnits->execute([$equipmentId]);
+            $existing = $existingUnits->fetchAll(PDO::FETCH_KEY_PAIR);
+            
+            // Update existing units with new conditions
+            foreach ($unitsToPersist as $unit) {
+                $unitNum = (int) $unit['unit_number'];
+                if (isset($existing[$unitNum])) {
+                    // Unit exists, update its condition
+                    $upd = $pdo->prepare("UPDATE equipment_units SET condition_tag = ? WHERE unit_id = ?");
+                    $upd->execute([$unit['condition_tag'] ?? 'GOOD', $existing[$unitNum]]);
+                } else {
+                    // New unit, insert it
+                    $u = $pdo->prepare("INSERT INTO equipment_units (equipment_id, unit_number, condition_tag) VALUES (?, ?, ?)");
+                    $u->execute([$equipmentId, $unitNum, $unit['condition_tag'] ?? 'GOOD']);
+                }
+            }
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Failed to sync units: ' . $e->getMessage()]);
+            exit;
         }
 
         // Sync keywords if provided
-        if (isset($item['keywords']) && is_array($item['keywords'])) {
-            $pdo->prepare("DELETE FROM equipment_keywords WHERE equipment_id = ?")->execute([$equipmentId]);
-            foreach ($item['keywords'] as $kw) {
-                $k = $pdo->prepare("INSERT IGNORE INTO equipment_keywords (equipment_id, keyword) VALUES (?, ?)");
-                $k->execute([$equipmentId, $kw]);
+        try {
+            if (isset($item['keywords']) && is_array($item['keywords'])) {
+                $pdo->prepare("DELETE FROM equipment_keywords WHERE equipment_id = ?")->execute([$equipmentId]);
+                foreach ($item['keywords'] as $kw) {
+                    $k = $pdo->prepare("INSERT IGNORE INTO equipment_keywords (equipment_id, keyword) VALUES (?, ?)");
+                    $k->execute([$equipmentId, $kw]);
+                }
             }
+        } catch (Exception $e) {
+            // Log but don't fail if keywords sync fails
+            error_log("Warning: Failed to sync keywords: " . $e->getMessage());
         }
 
         if (!$ok) {
@@ -213,7 +250,14 @@ if ($action === 'save') {
             $item['image'] = $savedImage;
         }
         
-        $ok = tooltrace_inventory_add($item);
+        try {
+            $ok = tooltrace_inventory_add($item);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+            exit;
+        }
+
         if (!$ok) {
             http_response_code(500);
             echo json_encode(['error' => 'Failed to add equipment']);
